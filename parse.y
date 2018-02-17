@@ -27,7 +27,7 @@
 %token <ival> INTEGER IF THEN ELSE END EXIT
 %token <dval> DOUBLE
 %token <cval> LETTER
-%token ADD SUB MUL DIV SUBSIT SEMICOL CR
+%token ADD SUB MUL DIV SUBSIT SEMICOL EQUAL NOT_EQUAL CR
 /*
 program: プログラム全体
 expr: 式
@@ -62,15 +62,25 @@ program: { $$ = it; }
 block: expr {$$ = $1;}
      |if_st {$$ = $1;}
      ;
-if_st: IF expr THEN expr END
+if_st: IF expr EQUAL expr THEN expr END
      {
-      if($2 == 1.0){
-        $$ = $4;
+      if($2 == $4){
+        $$ = $6;
       }
       else{
         $$ = -1;
       }
-     };
+     }
+     | IF expr NOT_EQUAL expr THEN expr END
+     {
+      if($2 != $4){
+        $$ = $6;
+      }
+      else{
+        $$ = -1;
+      }
+     }
+     ;
 expr: term {$$ = $1;}
     | LETTER SUBSIT expr {identregister($1,$3); $$ = $3;}
     | expr ADD term {$$ = $1 + $3;}

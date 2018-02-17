@@ -13,6 +13,8 @@ sub "-"
 mul "*"
 div "/"
 subsit "="
+equal "=="
+not_equal "!="
 semicolon ";"
 cr  "\n"
 integer [0-9]+
@@ -24,6 +26,8 @@ double [0-9]+\.[0-9]+
 {mul} return MUL;
 {div} return DIV;
 {subsit} return SUBSIT;
+{equal} return EQUAL;
+{not_equal} return NOT_EQUAL;
 {semicolon} return SEMICOL;
 {cr} return CR;
 
