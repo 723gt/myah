@@ -62,19 +62,19 @@ program: { $$ = it; }
 block: expr {$$ = $1;}
      |if_st {$$ = $1;}
      ;
-if_st: IF expr EQUAL expr THEN expr END
+if_st: IF expr EQUAL expr THEN CR expr CR  END
      {
       if($2 == $4){
-        $$ = $6;
+        $$ = $7;
       }
       else{
         $$ = -1;
       }
      }
-     | IF expr NOT_EQUAL expr THEN expr END
+     | IF expr NOT_EQUAL expr THEN CR expr CR END
      {
       if($2 != $4){
-        $$ = $6;
+        $$ = $7;
       }
       else{
         $$ = -1;
