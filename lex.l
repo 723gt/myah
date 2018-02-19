@@ -31,6 +31,7 @@ double [0-9]+\.[0-9]+
 {semicolon} return SEMICOL;
 {cr} return CR;
 
+"let" return LET;
 
 {letter} {
   yylval.cval = yytext[0];

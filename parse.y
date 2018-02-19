@@ -24,7 +24,7 @@
   char cval;
 }
 
-%token <ival> INTEGER IF THEN ELSE END EXIT
+%token <ival> INTEGER IF THEN ELSE END EXIT LET
 %token <dval> DOUBLE
 %token <cval> LETTER
 %token ADD SUB MUL DIV SUBSIT SEMICOL EQUAL NOT_EQUAL CR
@@ -100,6 +100,7 @@ expr: term {$$ = $1;}
     | expr SUB term {$$ = $1 - $3;}
     ;
 term: factor {$$ = $1;}
+    | LET LETTER {identregister($1,0);$$ = 0;}
     | term MUL factor { $$ = $1 * $3;}
     | term DIV factor { $$ = $1 / $3;}
     ;
