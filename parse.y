@@ -35,20 +35,20 @@ term: 項
 factor: 1次式
 if_st: if文
  */
-%type <dval> program expr term factor if_st block
+%type <dval> program expr term factor blocks block sep
 %start program
 %%
 program: { $$ = it; }
-       |block CR
+       |blocks CR
        { 
         $$ = it = $1;
         printf(">> %lf\n",it);
        }
-       | block SEMICOL
+       | blocks SEMICOL
        {
         printf(">>%lf\n",it);
        }
-       |program block CR
+       |program blocks CR
        {
         $$ = it = $2;
         printf(">> %lf\n",it);
@@ -59,22 +59,16 @@ program: { $$ = it; }
         printf(">> %lf\n",it);
        }
        ;
-block: expr {$$ = $1;}
-     |if_st {$$ = $1;}
+sep: SEMICOL CR
+   | CR;
+blocks: expr {$$ = $1;}
+      | blocks sep expr { $$ = $1;}
+      |block {$$ = $1;}
      ;
-if_st: IF expr EQUAL expr THEN CR expr CR  END
+block: IF expr THEN sep blocks sep END
      {
-      if($2 == $4){
-        $$ = $7;
-      }
-      else{
-        $$ = -1;
-      }
-     }
-     | IF expr NOT_EQUAL expr THEN CR expr CR END
-     {
-      if($2 != $4){
-        $$ = $7;
+      if($2){
+        $$ = $5;
       }
       else{
         $$ = -1;
@@ -83,6 +77,24 @@ if_st: IF expr EQUAL expr THEN CR expr CR  END
      ;
 expr: term {$$ = $1;}
     | LETTER SUBSIT expr {identregister($1,$3); $$ = $3;}
+    | expr EQUAL expr
+    {
+      if($1 == $3){
+        $$ = 1;
+      }
+      else{
+        $$ = -1;
+      }
+    }
+    | expr NOT_EQUAL expr
+    {
+      if($1 != $3){
+        $$ = 1;
+      }
+      else{
+        $$ = -1;
+      }
+    }
     | expr ADD term {$$ = $1 + $3;}
     | expr SUB term {$$ = $1 - $3;}
     ;
