@@ -76,6 +76,7 @@ block: IF expr THEN sep blocks sep END
      }
      ;
 expr: term {$$ = $1;}
+    | LETTER SUBSIT term { $$ = $3;}
     | LETTER SUBSIT expr {identregister($1,$3); $$ = $3;}
     | expr EQUAL expr
     {
