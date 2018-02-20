@@ -9,20 +9,20 @@
   #define IDENTSIZE 16
 
   typedef struct _identmap{
-    char name;
+    char name[255];
     double value;
   } identmap;
   
   identmap imap[IDENTSIZE];
-  double getvalue(char name);
-  int identregister(char name,double value);
+  double getvalue(char *name);
+  int identregister(char *name,double value);
   double it; 
 %}
 
 %union{
   int ival;
   double dval;
-  char cval;
+  char cval[255];
 }
 
 %token <ival> INTEGER IF THEN ELSE END EXIT LET
@@ -132,21 +132,21 @@ int yyerror(char *msg){
   return 0;
 }
 
-int indexident(char name){
+int indexident(char *name){
   int i;
   for( i = 0; i < IDENTSIZE; i++){
-    if( imap[i].name == name){
+    if(strcmp(imap[i].name,name) == 0){
       return i;
     }
   }
   return -1;
 }
 
-int identregister(char name,double value){
+int identregister(char *name,double value){
   int i = indexident(name);
   if( i == -1){
     static int usedi = 0;
-    imap[usedi].name = name;
+    strcpy(imap[usedi].name,name);
     imap[usedi].value = value;
     usedi++;
   }
@@ -156,13 +156,13 @@ int identregister(char name,double value){
   return 0;
 }
 
-double getvalue(char name){
+double getvalue(char *name){
   int i = indexident(name);
   if(i != -1){
     return imap[i].value;
   }
   else{
-    printf("LOG:%c",name);
+    printf("LOG:%s",name);
   }
   return 0.0;
 }

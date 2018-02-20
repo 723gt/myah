@@ -1,5 +1,6 @@
 %{
   #include <stdio.h>
+  #include <string.h>
   #include "y.tab.h"
 
   int yywrap(void){
@@ -7,7 +8,7 @@
   }
 %}
 
-letter [a-zA-Z]
+letter [a-zA-Z]+
 add "+"
 sub "-"
 mul "*"
@@ -35,10 +36,7 @@ increment "++"
 
 "let" return LET;
 
-{letter} {
-  yylval.cval = yytext[0];
-  return LETTER;
-}
+
 
 {integer} {
   sscanf(yytext,"%d",&yylval.ival);
@@ -68,5 +66,10 @@ increment "++"
 
 "exit" {
   return EXIT;
+}
+{letter} {
+  //yylval.cval = yytext[0];
+  strcpy(yylval.cval,yytext);
+  return LETTER;
 }
 %%

@@ -1,7 +1,7 @@
 #include "incdec.h"
 #include "y.tab.h"
 
-double setincrement(char name,double value,int settype){
+double setincrement(char *name,double value,int settype){
   if(value != 0.0){
     identregister(name,value + 1);
     switch(settype) {
