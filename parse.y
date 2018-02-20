@@ -3,6 +3,7 @@
   #include <stdlib.h>
   #include <math.h>
   #include <string.h>
+  #include "incdec.h"
 
   #define YYDEBUG 1
   #define IDENTSIZE 16
@@ -99,24 +100,12 @@ expr: term {$$ = $1;}
     | LETTER INCREMENT 
     {
       double getval = getvalue($1);
-      if(getval != 0.0){
-        identregister($1,getval + 1);
-        $$ = (getval);
-      }
-      else{
-        $$ = getval;
-      }
+      $$ = setincrement($1,getval,AFTER);
     }
     | INCREMENT LETTER 
     {
        double getval = getvalue($2);
-       if(getval != 0.0){
-        identregister($2,getval + 1);
-        $$ = ++getval;
-       }
-       else{
-        $$ = getval;
-       }
+       $$ = setincrement($2,getval,BEFORE);
     }
     | expr ADD term {$$ = $1 + $3;}
     | expr SUB term {$$ = $1 - $3;}
