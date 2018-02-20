@@ -28,7 +28,7 @@
 %token <ival> INTEGER IF THEN ELSE END EXIT LET
 %token <dval> DOUBLE
 %token <cval> LETTER
-%token ADD SUB MUL DIV SUBSIT SEMICOL EQUAL NOT_EQUAL CR INCREMENT
+%token ADD SUB MUL DIV SUBSIT SEMICOL EQUAL NOT_EQUAL CR INCREMENT DECREMENT
 /*
 program: プログラム全体
 expr: 式
@@ -97,10 +97,20 @@ expr: term {$$ = $1;}
         $$ = -1;
       }
     }
+    | LETTER DECREMENT
+    {
+      double getval = getvalue($1);
+      $$ = setdecrement($1,getval,AFTER);
+    }
     | LETTER INCREMENT 
     {
       double getval = getvalue($1);
       $$ = setincrement($1,getval,AFTER);
+    }
+    | DECREMENT LETTER 
+    {
+      double getval = getvalue($2);
+      $$ = setdecrement($2,getval,BEFORE);
     }
     | INCREMENT LETTER 
     {

@@ -21,6 +21,7 @@ cr  "\n"
 integer [0-9]+
 double [0-9]+\.[0-9]+
 increment "++"
+decrement "--"
 
 %%
 {add} return ADD;
@@ -33,6 +34,7 @@ increment "++"
 {semicolon} return SEMICOL;
 {cr} return CR;
 {increment} return INCREMENT;
+{decrement} return DECREMENT;
 
 "let" return LET;
 
