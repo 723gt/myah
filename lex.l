@@ -19,6 +19,7 @@ semicolon ";"
 cr  "\n"
 integer [0-9]+
 double [0-9]+\.[0-9]+
+increment "++"
 
 %%
 {add} return ADD;
@@ -30,6 +31,7 @@ double [0-9]+\.[0-9]+
 {not_equal} return NOT_EQUAL;
 {semicolon} return SEMICOL;
 {cr} return CR;
+{increment} return INCREMENT;
 
 "let" return LET;
 
